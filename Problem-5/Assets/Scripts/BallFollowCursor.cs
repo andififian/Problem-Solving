@@ -4,19 +4,23 @@ using UnityEngine;
 
 public class BallFollowCursor : MonoBehaviour
 {
-    public void Update(){
-        Vector2 PosCursor = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = new Vector2(PosCursor.x, PosCursor.y);
-    }
-    // // Start is called before the first frame update
-    // void Start()
-    // {
-        
-    // }
+    private Rigidbody2D ballRigidbody;
+    public Camera mainCamera;
+    [Header("Ball Movement")]
+    public Vector2 ballpos = new Vector2(100, 100);
+    public float speed;
 
-    // // Update is called once per frame
-    // void Update()
-    // {
-        
-    // }
+     private void Start(){
+        ballRigidbody = GetComponent<Rigidbody2D>();
+    }
+    public void Update(){
+        Vector3 target = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1));
+        Vector3 moveAngle = target - transform.position;
+
+        if (Vector3.Distance(target, transform.position) > 0.5)
+            transform.Translate(moveAngle.normalized * speed * Time.deltaTime);
+    }
 }
+   
+    
+
